@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增表單</title>
+</head>
+<body>
+    <form id="form">
+        藥局名稱: <input type="text" name="name"><br>
+        電話: <input type="text" name="phone"><br>
+        地址: <input type="text" name="address"><br>
+        成人口罩庫存: <input type="text" name="adult_mask"><br>
+        孩童口罩庫存: <input type="text" name="child_mask"><br>
+        <button type="button" id="submit">新增</button>
+    </form>
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+
+    <script>
+
+        //監聽click事件
+        $('#submit').on('click', function() {
+            //整理表單資料到變數
+            var data = $('#form').serializeArray()
+            console.log(data);
+            JSONData = serializeToJSON(data)
+            console.log(JSONData);
+            // myJSON = JSON.parse(JSONData);
+            // return;
+                     
+            //ajax請求
+            $.ajax({
+                url: "/add",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSONData,
+                success: function(res) {
+                    // console.log(res.data);
+                    var res = JSON.parse(res)
+                    //後端會封裝一個response class，預先寫好執行No.
+                    if(res.errno === 1) {
+                        alert("新增成功!")
+                    } else if(res.errno === 0) {
+                        alert("新增失敗!")
+                    }
+                },
+                error: function() {
+                    alert("系統錯誤!")
+                }
+            })
+        })
+        //序列化轉JSON
+        function serializeToJSON(data) {
+            var values = {};
+            for(index in data){
+                values[data[index].name] = data[index].value;
+            }
+            return JSON.stringify(values)
+        }
+    </script>
+</body>
+</html>
