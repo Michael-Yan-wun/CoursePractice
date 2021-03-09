@@ -1,2 +1,3 @@
-# CoursePractice
- Just record some practices on course.
+ #### 課程程式碼紀錄
+ 
+ #### 可以進入app.js或者index.ejs等等的檔案看完整內容！
